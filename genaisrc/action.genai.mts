@@ -10,6 +10,11 @@ script({
       type: "string",
       description: "The base branch of the pull request",
     },
+    gitmojis: {
+      type: "boolean",
+      description: "Whether to use gitmojis in the pull request description",
+      default: true,
+    },
     instructions: {
       type: "string",
       description: "Instructions for the code reviewer",
@@ -18,7 +23,7 @@ script({
 });
 
 const { vars, dbg } = env;
-const { instructions } = vars;
+const { instructions, gitmojis } = vars;
 const maxTokens = 12000;
 const base = vars.base || (await git.defaultBranch());
 const branch = await git.branch();
@@ -53,7 +58,7 @@ This description will be used as the pull request description.
 - do NOT explain that GIT_DIFF displays changes in the codebase
 - try to extract the intent of the changes, don't focus on the details
 - use bullet points to list the changes
-- use gitmoji to make the description more engaging
+${gitmojis ? `- use gitmoji to make the description more engaging` : ``}
 - focus on the most important changes
 - do not try to fix issues, only describe the changes
 - ignore comments about imports (like added, remove, changed, etc.)

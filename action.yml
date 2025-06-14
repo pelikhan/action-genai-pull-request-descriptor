@@ -1,6 +1,11 @@
 name: action-genai-pull-request-descriptor
 description: Action
 inputs:
+  instructions:
+    description: "Additional prompting instructions"
+  gitmojis:
+    description: "Whether to use gitmojis in the pull request description"
+    default: true
   github_token:
     description: "GitHub token with `models: read` permission at least
       (https://microsoft.github.io/genaiscript/reference/github-actions/#github\
