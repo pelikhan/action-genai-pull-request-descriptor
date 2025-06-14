@@ -42,6 +42,7 @@ dbg(`branch: %s`, branch);
 if (branch === base) cancel("Already on the base branch!");
 
 // make sure the base branch is fetched
+await git.exec(["fetch", "origin", base]);
 await git.exec(["pull", "origin", `${base}:${base}`]);
 
 // compute diff
