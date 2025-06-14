@@ -13,10 +13,10 @@
     "lint": "npx --yes prettier --write genaisrc/",
     "fix": "genaiscript scripts fix",
     "typecheck": "genaiscript scripts compile",
-    "configure": "genaiscript configure action",
+    "configure": "genaiscript configure action pull-request-descriptor",
     "test": "echo 'No tests defined.'",
-    "dev": "DEBUG=script genaiscript run action",
-    "start": "genaiscript run action --github-workspace --no-run-trace --no-output-trace --pull-request-description",
+    "dev": "DEBUG=script genaiscript run pull-request-descriptor",
+    "start": "genaiscript run pull-request-descriptor --github-workspace --no-run-trace --no-output-trace --pull-request-description",
     "release": "sh release.sh"
   }
 }

@@ -51,9 +51,9 @@ const changes = await git.diff({
   maxTokensFullDiff: maxTokens,
   llmify: true,
   excludedPaths: [
-    "**/package-lock.json",
-    "**/yarn.lock",
-    "**/pnpm-lock.yaml",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
     excluded,
   ].filter(Boolean),
 });
