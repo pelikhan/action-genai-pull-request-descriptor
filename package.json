@@ -15,8 +15,8 @@
     "typecheck": "genaiscript scripts compile",
     "configure": "genaiscript configure action",
     "test": "echo 'No tests defined.'",
-    "dev": "genaiscript run action",
-    "start": "genaiscript run action --github-workspace --no-run-trace --no-output-trace",
+    "dev": "DEBUG=script genaiscript run action",
+    "start": "genaiscript run action --github-workspace --no-run-trace --no-output-trace --pull-request-description",
     "release": "sh release.sh"
   }
 }
