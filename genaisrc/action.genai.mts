@@ -32,7 +32,7 @@ const { instructions, gitmojis, excluded } = vars as {
   gitmojis: boolean;
   excluded: string;
 };
-const maxTokens = 12000;
+const maxTokens = 7000;
 const base = vars.base || (await git.defaultBranch());
 const branch = await git.branch();
 
@@ -47,7 +47,15 @@ await git.exec(["fetch", "origin", base]);
 // compute diff
 const changes = await git.diff({
   base: `origin/${base}`,
-  excludedPaths: excluded,
+  ignoreSpaceChange: true,
+  maxTokensFullDiff: maxTokens,
+  llmify: true,
+  excludedPaths: [
+    "**/package-lock.json",
+    "**/yarn.lock",
+    "**/pnpm-lock.yaml",
+    excluded,
+  ].filter(Boolean),
 });
 
 if (!changes) cancel("No changes detected");
