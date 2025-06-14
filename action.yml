@@ -1,0 +1,21 @@
+name: action-genai-pull-request-descriptor
+description: Action
+inputs:
+  github_token:
+    description: "GitHub token with `models: read` permission at least
+      (https://microsoft.github.io/genaiscript/reference/github-actions/#github\
+      -models-permissions)."
+    required: true
+  debug:
+    description: Enable debug logging
+      (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
+    required: false
+outputs:
+  text:
+    description: The generated text output.
+branding:
+  color: yellow
+  icon: hard-drive
+runs:
+  using: docker
+  image: Dockerfile

@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "genaiscript": "1.142.9"
+  },
+  "scripts": {
+    "upgrade": "npx -y npm-check-updates -u && npm install",
+    "docker:build": "docker build -t pelikhan-action-genai-pull-request-descriptor .",
+    "docker:start": "docker run -e GITHUB_TOKEN pelikhan-action-genai-pull-request-descriptor",
+    "act:install": "gh extension install https://github.com/nektos/gh-act",
+    "act": "gh act",
+    "lint": "npx --yes prettier --write genaisrc/",
+    "fix": "genaiscript scripts fix",
+    "typecheck": "genaiscript scripts compile",
+    "configure": "genaiscript configure action",
+    "test": "echo 'No tests defined.'",
+    "dev": "genaiscript run action",
+    "start": "genaiscript run action --github-workspace --no-run-trace --no-output-trace",
+    "release": "sh release.sh"
+  }
+}
