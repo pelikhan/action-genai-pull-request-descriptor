@@ -2,11 +2,8 @@
 ## Inputs
 
 - `github_token`: GitHub token with `models: read` permission at least (https://microsoft.github.io/genaiscript/reference/github-actions/#github-models-permissions). (required)
+- `github_issue`: The issue number to associate with the pull request. (required)
 - `debug`: Enable debug logging (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
-
-## Outputs
-
-- `text`: The generated text output.
 
 ## Usage
 
@@ -16,6 +13,7 @@ Add the following to your step in your workflow file:
 uses: pelikhan/action-genai-pull-request-descriptor@main
 with:
   github_token: ${{ secrets.GITHUB_TOKEN }}
+  github_issue: ${{ github.event.pull_request.number }}
 ```
 
 ## Example
@@ -26,8 +24,7 @@ on:
     push:
 permissions:
     contents: read
-    # issues: write
-    # pull-requests: write
+    pull-requests: write
     models: read
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
@@ -40,6 +37,7 @@ jobs:
       - uses: pelikhan/action-genai-pull-request-descriptor@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_issue: ${{ github.event.pull_request.number }}
 ```
 
 ## Development

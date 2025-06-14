@@ -4,14 +4,10 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
 permissions:
   contents: read
   models: read
   pull-requests: write
-  issues: write
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -30,4 +26,4 @@ jobs:
       - uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
+          github_issue: ${{ github.event.pull_request.number }}

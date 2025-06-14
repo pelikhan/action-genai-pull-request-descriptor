@@ -14,17 +14,12 @@ script({
       type: "string",
       description: "Instructions for the code reviewer",
     },
-    maxTokens: {
-      type: "number",
-      description: "The maximum number of tokens to generate",
-      default: 14000,
-    },
   },
 });
 
 const { vars, dbg } = env;
 const { instructions } = vars;
-const maxTokens = vars.maxTokens;
+const maxTokens = 12000;
 const base = vars.base || (await git.defaultBranch());
 const branch = await git.branch();
 
@@ -58,7 +53,7 @@ This description will be used as the pull request description.
 - do NOT explain that GIT_DIFF displays changes in the codebase
 - try to extract the intent of the changes, don't focus on the details
 - use bullet points to list the changes
-- use emojis to make the description more engaging
+- use gitmoji to make the description more engaging
 - focus on the most important changes
 - do not try to fix issues, only describe the changes
 - ignore comments about imports (like added, remove, changed, etc.)
