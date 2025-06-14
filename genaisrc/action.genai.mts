@@ -19,11 +19,19 @@ script({
       type: "string",
       description: "Instructions for the code reviewer",
     },
+    excluded: {
+      type: "string",
+      description: "Excluded paths from diff",
+    },
   },
 });
 
 const { vars, dbg } = env;
-const { instructions, gitmojis } = vars;
+const { instructions, gitmojis, excluded } = vars as {
+  instructions: string;
+  gitmojis: boolean;
+  excluded: string;
+};
 const maxTokens = 12000;
 const base = vars.base || (await git.defaultBranch());
 const branch = await git.branch();
@@ -33,10 +41,16 @@ dbg(`branch: %s`, branch);
 
 if (branch === base) cancel("Already on the base branch!");
 
+// make sure the base branch is fetched
+await git.exec(["pull", "origin", `${base}:${base}`]);
+
 // compute diff
 const changes = await git.diff({
   base: base,
+  excludedPaths: excluded,
 });
+
+if (!changes) cancel("No changes detected");
 
 console.debug(changes);
 
