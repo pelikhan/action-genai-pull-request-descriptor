@@ -10,10 +10,8 @@ inputs:
     description: "GitHub token with `models: read` permission at least
       (https://microsoft.github.io/genaiscript/reference/github-actions/#github\
       -models-permissions)."
-    default: ${{ secrets.GITHUB_TOKEN }}
   github_issue:
     description: "The issue number to associate with the pull request."
-    default: ${{ github.event.pull_request.number }}
   debug:
     description: Enable debug logging
       (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
