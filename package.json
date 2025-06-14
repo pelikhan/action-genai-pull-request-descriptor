@@ -5,7 +5,7 @@
     "genaiscript": "1.142.9"
   },
   "scripts": {
-    "upgrade": "npx -y npm-check-updates -u && npm install",
+    "upgrade": "npx -y npm-check-updates -u && npm install && npm run fix",
     "docker:build": "docker build -t pelikhan-action-genai-pull-request-descriptor .",
     "docker:start": "docker run -e GITHUB_TOKEN pelikhan-action-genai-pull-request-descriptor",
     "act:install": "gh extension install https://github.com/nektos/gh-act",
