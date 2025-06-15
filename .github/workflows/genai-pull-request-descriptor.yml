@@ -7,7 +7,7 @@ on:
                 description: "The issue number to associate with the pull request."
                 required: true
     pull_request:
-        types: [opened, reopened, review_requested, ready_for_review]
+        types: [opened, reopened, ready_for_review]
 permissions:
     contents: read
     pull-requests: write
