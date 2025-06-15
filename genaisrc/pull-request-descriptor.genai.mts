@@ -30,7 +30,11 @@ script({
 });
 
 const { vars, dbg } = env;
-const { instructions, gitmojis, excluded } = vars as {
+const {
+  instructions,
+  gitmojis,
+  excluded = "",
+} = vars as {
   instructions: string;
   gitmojis: boolean;
   excluded: string;
@@ -41,6 +45,7 @@ const branch = await git.branch();
 
 dbg(`base: %s`, base);
 dbg(`branch: %s`, branch);
+dbg(`excluded: %s`, excluded);
 
 if (branch === base) cancel("Already on the base branch!");
 
@@ -57,7 +62,7 @@ const changes = await git.diff({
     "package-lock.json",
     "yarn.lock",
     "pnpm-lock.yaml",
-    excluded,
+    ...excluded.split(/\r?\n|;/g),
   ].filter(Boolean),
 });
 
