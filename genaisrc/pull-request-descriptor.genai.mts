@@ -41,9 +41,10 @@ const {
 };
 const maxTokens = 7000;
 
-console.log(`pwd: ${process.cwd}`);
+console.log(`pwd: ${process.cwd()}`);
 console.log(`github workspace: ${process.env.GITHUB_WORKSPACE}`);
 const g = git.client(process.env.GITHUB_WORKSPACE || "");
+
 const base = vars.base || (await g.defaultBranch());
 const branch = await g.branch();
 if (!branch) throw new Error("Unable to determine git current branch");
