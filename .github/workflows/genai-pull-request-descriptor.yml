@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: 'echo "pwd: $(pwd)"'
       - run: git status
       - run: git remote show origin
       - run: git branch --show-current
