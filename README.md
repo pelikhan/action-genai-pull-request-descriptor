@@ -1,6 +1,13 @@
+This GitHub Action generates a description of a pull request using Generative AI.
+
+> [!NOTE]
+> This action uses [GitHub Models](https://github.com/models) for LLM inference.
 
 ## Inputs
 
+- `instructions`: Custom prompting instructions to generate the message.
+- `gitmojis`: Whether to use [Gitmojis](https://gitmoji.dev/) in the message. Defaults to `true`.
+- `excluded`: A comma-separated list of file paths to exclude from the message.
 - `github_token`: GitHub token with `models: read` permission at least (https://microsoft.github.io/genaiscript/reference/github-actions/#github-models-permissions). (required)
 - `github_issue`: The issue number to associate with the pull request. (required)
 - `debug`: Enable debug logging (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
@@ -23,21 +30,21 @@ Save this code as `.github/workflows/genai-pull-request-descriptor.yml` in your 
 ```yaml
 name: GenAI Pull Request Descriptor
 on:
-    workflow_dispatch:
-        inputs:
-            issue_number:
-                type: number
-                description: "The issue number to associate with the pull request."
-                required: true
-    pull_request:
-        types: [opened, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        type: number
+        description: "The issue number to associate with the pull request."
+        required: true
+  pull_request:
+    types: [opened, reopened, ready_for_review]
 permissions:
-    contents: read
-    pull-requests: write
-    models: read
+  contents: read
+  pull-requests: write
+  models: read
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.issue_number || github.event.pull_request.number }}
-    cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.issue_number || github.event.pull_request.number }}
+  cancel-in-progress: true
 jobs:
   run-script:
     runs-on: ubuntu-latest
@@ -76,16 +83,19 @@ npm run lint
 ```
 
 To typecheck the scripts, run:
+
 ```bash
 npm run typecheck
 ```
 
 To build the Docker image locally, run:
+
 ```bash
 npm run docker:build
 ```
 
 To run the action locally in Docker (build it first), use:
+
 ```bash
 npm run docker:start
 ```
