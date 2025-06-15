@@ -10,16 +10,29 @@ script({
       type: "string",
       description: "The base branch of the pull request",
     },
+    gitmojis: {
+      type: "boolean",
+      description: "Whether to use gitmojis in the pull request description",
+      default: true,
+    },
     instructions: {
       type: "string",
       description: "Instructions for the code reviewer",
+    },
+    excluded: {
+      type: "string",
+      description: "Excluded paths from diff",
     },
   },
 });
 
 const { vars, dbg } = env;
-const { instructions } = vars;
-const maxTokens = 12000;
+const { instructions, gitmojis, excluded } = vars as {
+  instructions: string;
+  gitmojis: boolean;
+  excluded: string;
+};
+const maxTokens = 7000;
 const base = vars.base || (await git.defaultBranch());
 const branch = await git.branch();
 
@@ -28,10 +41,24 @@ dbg(`branch: %s`, branch);
 
 if (branch === base) cancel("Already on the base branch!");
 
+// make sure the base branch is fetched
+await git.exec(["fetch", "origin", base]);
+
 // compute diff
 const changes = await git.diff({
-  base: base,
+  base: `origin/${base}`,
+  ignoreSpaceChange: true,
+  maxTokensFullDiff: maxTokens,
+  llmify: true,
+  excludedPaths: [
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    excluded,
+  ].filter(Boolean),
 });
+
+if (!changes) cancel("No changes detected");
 
 console.debug(changes);
 
@@ -53,7 +80,7 @@ This description will be used as the pull request description.
 - do NOT explain that GIT_DIFF displays changes in the codebase
 - try to extract the intent of the changes, don't focus on the details
 - use bullet points to list the changes
-- use gitmoji to make the description more engaging
+${gitmojis ? `- use gitmoji to make the description more engaging` : ``}
 - focus on the most important changes
 - do not try to fix issues, only describe the changes
 - ignore comments about imports (like added, remove, changed, etc.)
