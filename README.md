@@ -18,16 +18,25 @@ with:
 
 ## Example
 
+Save this code as `.github/workflows/genai-pull-request-descriptor.yml` in your repository:
+
 ```yaml
-name: My action
+name: GenAI Pull Request Descriptor
 on:
-    push:
+    workflow_dispatch:
+        inputs:
+            issue_number:
+                type: number
+                description: "The issue number to associate with the pull request."
+                required: true
+    pull_request:
+        types: [opened, reopened, review_requested, ready_for_review]
 permissions:
     contents: read
     pull-requests: write
     models: read
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
+    group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.issue_number || github.event.pull_request.number }}
     cancel-in-progress: true
 jobs:
   run-script:
@@ -37,7 +46,7 @@ jobs:
       - uses: pelikhan/action-genai-pull-request-descriptor@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_issue: ${{ github.event.pull_request.number }}
+          github_issue: ${{ github.event.inputs.issue_number || github.event.pull_request.number }}
 ```
 
 ## Development
