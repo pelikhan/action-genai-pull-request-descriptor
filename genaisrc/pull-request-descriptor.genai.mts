@@ -1,6 +1,9 @@
 script({
   responseType: "markdown",
   accept: "none",
+  title: "Pull Request Descriptor",
+  description:
+    "Generate a pull request description based on the changes in the codebase",
   branding: {
     color: "yellow",
     icon: "hard-drive",
