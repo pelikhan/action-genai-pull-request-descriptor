@@ -40,8 +40,9 @@ const {
   excluded: string;
 };
 const maxTokens = 7000;
-const base = vars.base || (await git.defaultBranch());
-const branch = await git.branch();
+const g = git.client(".")
+const base = vars.base || (await g.defaultBranch());
+const branch = await g.branch();
 
 console.debug(`base: ` + base);
 console.debug(`branch: ` + branch);
@@ -50,10 +51,10 @@ dbg(`excluded: %s`, excluded);
 if (branch === base) cancel(`Already on the base branch '${base}'!`);
 
 // make sure the base branch is fetched
-await git.exec(["fetch", "origin", base]);
+await g.exec(["fetch", "origin", base]);
 
 // compute diff
-const changes = await git.diff({
+const changes = await g.diff({
   base: `origin/${base}`,
   ignoreSpaceChange: true,
   maxTokensFullDiff: maxTokens,
