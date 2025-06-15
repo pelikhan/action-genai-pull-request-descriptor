@@ -66,6 +66,7 @@ const changes = await git.diff({
   ].filter(Boolean),
 });
 
+console.log(changes);
 if (!changes) cancel("No changes detected");
 
 console.debug(changes);
