@@ -43,11 +43,11 @@ const maxTokens = 7000;
 const base = vars.base || (await git.defaultBranch());
 const branch = await git.branch();
 
-console.debug(`base: %s`, base);
-console.debug(`branch: %s`, branch);
+console.debug(`base: ` + base);
+console.debug(`branch: ` + branch);
 dbg(`excluded: %s`, excluded);
 
-if (branch === base) cancel(`Already on the base branch '${base}!`);
+if (branch === base) cancel(`Already on the base branch '${base}'!`);
 
 // make sure the base branch is fetched
 await git.exec(["fetch", "origin", base]);
