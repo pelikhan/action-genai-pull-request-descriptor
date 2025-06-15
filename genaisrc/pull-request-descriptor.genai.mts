@@ -40,9 +40,10 @@ const {
   excluded: string;
 };
 const maxTokens = 7000;
-const g = git.client(".")
+const g = git.client(process.env.GITHUB_WORKSPACE || "");
 const base = vars.base || (await g.defaultBranch());
 const branch = await g.branch();
+if (!branch) throw new Error("Unable to determine git current branch");
 
 console.debug(`base: ` + base);
 console.debug(`branch: ` + branch);
