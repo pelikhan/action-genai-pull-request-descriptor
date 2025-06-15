@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: git status
+      - run: git remote show origin
+      - run: git branch --show-current
       - uses: pelikhan/action-genai-pull-request-descriptor@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
