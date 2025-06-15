@@ -16,7 +16,7 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.issue_number || github.event.pull_request.number }}
     cancel-in-progress: true
 jobs:
-  run-script:
+  generate-pull-request-description:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
