@@ -44,9 +44,10 @@ const maxTokens = 7000;
 console.log(`pwd: ${process.cwd()}`);
 console.log(`github workspace: ${process.env.GITHUB_WORKSPACE}`);
 
-await host.exec('chown -R $(id -u):$(id -g) $PWD');
-
 const g = git.client(process.env.GITHUB_WORKSPACE || "");
+await g.exec(
+  `config --global --add safe.directory ${process.env.GITHUB_WORKSPACE}`
+);
 
 const base = vars.base || (await g.defaultBranch());
 const branch = await g.branch();
