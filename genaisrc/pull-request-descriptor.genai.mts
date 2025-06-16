@@ -41,6 +41,9 @@ const maxTokens = 7000;
 const info = await github.info();
 dbg(`github info: %O`, info);
 
+const event = await workspace.readJSON(process.env.GITHUB_EVENT_PATH)
+dbg(`event: %O`, event);
+
 const base =
   vars.base || process.env.GITHUB_BASE_REF || (await git.defaultBranch());
 console.debug(`base: ` + base);
