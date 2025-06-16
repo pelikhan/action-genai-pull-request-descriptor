@@ -41,7 +41,8 @@ const maxTokens = 7000;
 const info = await github.info();
 dbg(`github info: %O`, info);
 
-const base = vars.base || (await git.defaultBranch());
+const base =
+  vars.base || process.env.GITHUB_BASE_REF || (await git.defaultBranch());
 console.debug(`base: ` + base);
 dbg(`excluded: %o`, excluded);
 
