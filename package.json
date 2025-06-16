@@ -2,7 +2,7 @@
   "private": true,
   "version": "0.0.2",
   "dependencies": {
-    "genaiscript": "1.142.9"
+    "genaiscript": "1.142.10"
   },
   "scripts": {
     "upgrade": "npx -y npm-check-updates -u && npm install && npm run fix",

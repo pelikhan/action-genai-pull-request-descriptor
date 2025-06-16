@@ -40,26 +40,17 @@ const {
   excluded: string;
 };
 const maxTokens = 7000;
-const githubWorkspace = process.env.GITHUB_WORKSPACE;
-
 console.log(`pwd: ${process.cwd()}`);
-console.log(`github workspace: ${githubWorkspace}`);
 
-const g = git.client(githubWorkspace || "");
-if (githubWorkspace)
-  await g.exec(
-    `config --global --add safe.directory ${process.env.GITHUB_WORKSPACE}`,
-  );
-
-const base = vars.base || (await g.defaultBranch());
+const base = vars.base || (await git.defaultBranch());
 console.debug(`base: ` + base);
 dbg(`excluded: %s`, excluded);
 
 // make sure the base branch is fetched
-await g.exec(["fetch", "origin", base]);
+await git.fetch("origin", "base");
 
 // compute diff
-const changes = await g.diff({
+const changes = await git.diff({
   base: `origin/${base}`,
   ignoreSpaceChange: true,
   maxTokensFullDiff: maxTokens,
