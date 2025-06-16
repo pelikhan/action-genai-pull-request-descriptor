@@ -40,14 +40,16 @@ const {
   excluded: string;
 };
 const maxTokens = 7000;
+const githubWorkspace = process.env.GITHUB_WORKSPACE;
 
 console.log(`pwd: ${process.cwd()}`);
-console.log(`github workspace: ${process.env.GITHUB_WORKSPACE}`);
+console.log(`github workspace: ${githubWorkspace}`);
 
-const g = git.client(process.env.GITHUB_WORKSPACE || "");
-await g.exec(
-  `config --global --add safe.directory ${process.env.GITHUB_WORKSPACE}`
-);
+const g = git.client(githubWorkspace || "");
+if (githubWorkspace)
+  await g.exec(
+    `config --global --add safe.directory ${process.env.GITHUB_WORKSPACE}`,
+  );
 
 const base = vars.base || (await g.defaultBranch());
 console.debug(`base: ` + base);
