@@ -75,9 +75,6 @@ To **regenerate** the action files (`action.yml`, `Dockerfile`, `README.md`, `pa
 npm run configure
 ```
 
-> [!CAUTION]
-> This will overwrite any changes you made to these files!
-
 To lint script files, run:
 
 ```bash
