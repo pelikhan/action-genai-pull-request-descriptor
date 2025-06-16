@@ -3,7 +3,7 @@
 git pull
 
 # sync action.yml
-npm run 
+npm run configure
 # Lint and build
 npm run lint
 
