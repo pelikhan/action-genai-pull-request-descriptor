@@ -50,14 +50,8 @@ await g.exec(
 );
 
 const base = vars.base || (await g.defaultBranch());
-const branch = await g.branch();
-if (!branch) throw new Error("Unable to determine git current branch");
-
 console.debug(`base: ` + base);
-console.debug(`branch: ` + branch);
 dbg(`excluded: %s`, excluded);
-
-if (branch === base) cancel(`Already on the base branch '${base}'!`);
 
 // make sure the base branch is fetched
 await g.exec(["fetch", "origin", base]);
