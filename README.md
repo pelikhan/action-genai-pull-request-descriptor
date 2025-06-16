@@ -25,6 +25,15 @@ with:
   github_issue: ${{ github.event.pull_request.number }}
 ```
 
+The action requires the `models: read` permission to access GitHub Models inference and
+`pull-requests: write` permission to update the description of the pull request.
+
+```yaml
+permissions:
+  pull-requests: write
+  models: read
+```
+
 ## Example
 
 Save this code as `.github/workflows/genai-pull-request-descriptor.yml` in your repository:
