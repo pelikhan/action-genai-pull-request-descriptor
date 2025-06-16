@@ -47,7 +47,7 @@ console.debug(`base: ` + base);
 dbg(`excluded: %s`, excluded);
 
 // make sure the base branch is fetched
-await git.fetch("origin", "base");
+await git.fetch("origin", base);
 
 // compute diff
 const changes = await git.diff({
