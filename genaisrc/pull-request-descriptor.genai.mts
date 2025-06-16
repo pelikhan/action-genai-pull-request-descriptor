@@ -8,6 +8,8 @@ script({
     color: "yellow",
     icon: "hard-drive",
   },
+  system: ["system", "system.assistant", "system.english"],
+  systemSafety: true,
   parameters: {
     base: {
       type: "string",
@@ -30,21 +32,17 @@ script({
 });
 
 const { vars, dbg } = env;
-const {
-  instructions,
-  gitmojis,
-  excluded = "",
-} = vars as {
+const { instructions, gitmojis } = vars as {
   instructions: string;
   gitmojis: boolean;
-  excluded: string;
 };
+const excluded: string[] = vars.excluded?.split(/\r?\n|;/g) || [];
 const maxTokens = 7000;
-console.log(`pwd: ${process.cwd()}`);
 
-const base = vars.base || (await git.defaultBranch());
+const base =
+  vars.base || process.env.GITHUB_BASE_REF || (await git.defaultBranch());
 console.debug(`base: ` + base);
-dbg(`excluded: %s`, excluded);
+dbg(`excluded: %o`, excluded);
 
 // make sure the base branch is fetched
 await git.fetch("origin", base);
@@ -59,7 +57,8 @@ const changes = await git.diff({
     "**/package-lock.json",
     "**/yarn.lock",
     "**/pnpm-lock.yaml",
-    ...excluded.split(/\r?\n|;/g),
+    "**/node_modules/**",
+    ...excluded,
   ].filter(Boolean),
 });
 

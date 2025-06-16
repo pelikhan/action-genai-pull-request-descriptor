@@ -1,19 +1,24 @@
 name: action-genai-pull-request-descriptor
-description: Action
+description: Pull Request Descriptor
 inputs:
-  instructions:
-    description: "Additional prompting instructions"
+  base:
+    description: The base branch of the pull request
+    required: false
   gitmojis:
-    description: "Whether to use gitmojis in the pull request description"
+    description: Whether to use gitmojis in the pull request description
+    required: false
     default: true
+  instructions:
+    description: Instructions for the code reviewer
+    required: false
   excluded:
-    description: "List of files to exclude from the pull request description"
+    description: Excluded paths from diff
+    required: false
   github_token:
     description: "GitHub token with `models: read` permission at least
       (https://microsoft.github.io/genaiscript/reference/github-actions/#github\
       -models-permissions)."
-  github_issue:
-    description: "The issue number to associate with the pull request."
+    required: true
   debug:
     description: Enable debug logging
       (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
@@ -24,3 +29,6 @@ branding:
 runs:
   using: docker
   image: Dockerfile
+outputs:
+  text:
+    description: The generated text output.
