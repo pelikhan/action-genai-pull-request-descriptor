@@ -11,7 +11,6 @@ This GitHub Action generates a description of a pull request using Generative AI
 - `gitmojis`: Whether to use [Gitmojis](https://gitmoji.dev/) in the message. Defaults to `true`.
 - `excluded`: A comma-separated list of file paths to exclude from the message.
 - `github_token`: GitHub token with `models: read` permission at least (https://microsoft.github.io/genaiscript/reference/github-actions/#github-models-permissions). (required)
-- `github_issue`: The pull request.
 - `debug`: Enable debug logging (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
 
 ## Usage
@@ -40,12 +39,6 @@ Save this code as `.github/workflows/genai-pull-request-descriptor.yml` in your 
 ```yaml
 name: GenAI Pull Request Descriptor
 on:
-  workflow_dispatch:
-    inputs:
-      issue_number:
-        type: number
-        description: "The issue number to associate with the pull request."
-        required: true
   pull_request:
     types: [opened, reopened, ready_for_review]
 permissions:
@@ -53,7 +46,7 @@ permissions:
   pull-requests: write
   models: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.issue_number || github.event.pull_request.number }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   generate-pull-request-description:
@@ -63,7 +56,6 @@ jobs:
       - uses: pelikhan/action-genai-pull-request-descriptor@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_issue: ${{ github.event.inputs.issue_number }}
 ```
 
 ## Development
