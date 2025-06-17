@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "dependencies": {
     "genaiscript": "1.142.13"
   },
