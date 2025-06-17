@@ -1,5 +1,5 @@
 name: action-genai-pull-request-descriptor
-description: Pull Request Descriptor
+description: Generate a pull request description based on the changes in the codebase
 inputs:
   base:
     description: The base branch of the pull request
@@ -19,6 +19,9 @@ inputs:
       (https://microsoft.github.io/genaiscript/reference/github-actions/#github\
       -models-permissions)."
     required: true
+  github_issue:
+    description: GitHub pull request number to use when generating comments
+      (https://microsoft.github.io/genaiscript/reference/scripts/github/).
   debug:
     description: Enable debug logging
       (https://microsoft.github.io/genaiscript/reference/scripts/logging/).

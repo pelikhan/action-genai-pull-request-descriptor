@@ -8,7 +8,7 @@ script({
     color: "yellow",
     icon: "hard-drive",
   },
-  system: ["system", "system.assistant", "system.english"],
+  system: ["system", "system.assistant"],
   systemSafety: true,
   parameters: {
     base: {
