@@ -12,7 +12,7 @@
     "configure": "genaiscript configure action pull-request-descriptor --event pull_request --pull-request-description",
     "test": "echo 'No tests defined.'",
     "dev": "DEBUG=script genaiscript run pull-request-descriptor",
-    "start": "GH_TOKEN=$GITHUB_TOKEN genaiscript run pull-request-descriptor --github-workspace --no-run-trace --no-output-trace --pull-request-description",
+    "start": "GH_TOKEN=$INPUT_GITHUB_TOKEN genaiscript run pull-request-descriptor --github-workspace --no-run-trace --no-output-trace --pull-request-description",
     "release": "sh release.sh"
   }
 }
