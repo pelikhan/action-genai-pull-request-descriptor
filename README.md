@@ -11,7 +11,6 @@ This GitHub Action generates a description of a pull request using Generative AI
 - `gitmojis`: Whether to use [Gitmojis](https://gitmoji.dev/) in the message. Defaults to `true`.
 - `excluded`: A comma-separated list of file paths to exclude from the message.
 - `github_token`: GitHub token with `models: read` permission at least (https://microsoft.github.io/genaiscript/reference/github-actions/#github-models-permissions). (required)
-- `github_issue`: The issue number to associate with the pull request. (required)
 - `debug`: Enable debug logging (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
 
 ## Usage
@@ -19,10 +18,9 @@ This GitHub Action generates a description of a pull request using Generative AI
 Add the following to your step in your workflow file:
 
 ```yaml
-uses: pelikhan/action-genai-pull-request-descriptor@main
+uses: pelikhan/action-genai-pull-request-descriptor@v0
 with:
   github_token: ${{ secrets.GITHUB_TOKEN }}
-  github_issue: ${{ github.event.pull_request.number }}
 ```
 
 The action requires the `models: read` permission to access GitHub Models inference and
@@ -41,12 +39,6 @@ Save this code as `.github/workflows/genai-pull-request-descriptor.yml` in your 
 ```yaml
 name: GenAI Pull Request Descriptor
 on:
-  workflow_dispatch:
-    inputs:
-      issue_number:
-        type: number
-        description: "The issue number to associate with the pull request."
-        required: true
   pull_request:
     types: [opened, reopened, ready_for_review]
 permissions:
@@ -54,17 +46,16 @@ permissions:
   pull-requests: write
   models: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.issue_number || github.event.pull_request.number }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   generate-pull-request-description:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pelikhan/action-genai-pull-request-descriptor@main
+      - uses: pelikhan/action-genai-pull-request-descriptor@v0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_issue: ${{ github.event.inputs.issue_number || github.event.pull_request.number }}
 ```
 
 ## Development
@@ -78,14 +69,11 @@ We recommend updating the script metadata instead of editing the action files di
 - the readme description is the script description
 - the action branding is the script branding
 
-To **regenerate** the action files (`action.yml`, `Dockerfile`, `README.md`, `package.json`, `.gitignore`), run:
+To **regenerate** the action files (`action.yml`), run:
 
 ```bash
 npm run configure
 ```
-
-> [!CAUTION]
-> This will overwrite any changes you made to these files!
 
 To lint script files, run:
 
@@ -97,30 +85,6 @@ To typecheck the scripts, run:
 
 ```bash
 npm run typecheck
-```
-
-To build the Docker image locally, run:
-
-```bash
-npm run docker:build
-```
-
-To run the action locally in Docker (build it first), use:
-
-```bash
-npm run docker:start
-```
-
-To run the action using [act](https://nektosact.com/), first install the act CLI:
-
-```bash
-npm run act:install
-```
-
-Then, you can run the action with:
-
-```bash
-npm run act
 ```
 
 ## Upgrade

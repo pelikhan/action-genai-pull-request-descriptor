@@ -8,6 +8,8 @@ script({
     color: "yellow",
     icon: "hard-drive",
   },
+  system: ["system", "system.assistant"],
+  systemSafety: true,
   parameters: {
     base: {
       type: "string",
@@ -30,43 +32,33 @@ script({
 });
 
 const { vars, dbg } = env;
-const {
-  instructions,
-  gitmojis,
-  excluded = "",
-} = vars as {
+const { instructions, gitmojis } = vars as {
   instructions: string;
   gitmojis: boolean;
-  excluded: string;
 };
+const excluded: string[] = vars.excluded?.split(/\r?\n|;/g) || [];
 const maxTokens = 7000;
 
-console.log(`pwd: ${process.cwd()}`);
-console.log(`github workspace: ${process.env.GITHUB_WORKSPACE}`);
-
-const g = git.client(process.env.GITHUB_WORKSPACE || "");
-await g.exec(
-  `config --global --add safe.directory ${process.env.GITHUB_WORKSPACE}`
-);
-
-const base = vars.base || (await g.defaultBranch());
+const base =
+  vars.base || process.env.GITHUB_BASE_REF || (await git.defaultBranch());
 console.debug(`base: ` + base);
-dbg(`excluded: %s`, excluded);
+dbg(`excluded: %o`, excluded);
 
 // make sure the base branch is fetched
-await g.exec(["fetch", "origin", base]);
+await git.fetch("origin", base);
 
 // compute diff
-const changes = await g.diff({
+const changes = await git.diff({
   base: `origin/${base}`,
   ignoreSpaceChange: true,
   maxTokensFullDiff: maxTokens,
   llmify: true,
   excludedPaths: [
-    "package-lock.json",
-    "yarn.lock",
-    "pnpm-lock.yaml",
-    ...excluded.split(/\r?\n|;/g),
+    "**/package-lock.json",
+    "**/yarn.lock",
+    "**/pnpm-lock.yaml",
+    "**/node_modules/**",
+    ...excluded,
   ].filter(Boolean),
 });
 
