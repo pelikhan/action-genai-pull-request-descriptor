@@ -13,6 +13,7 @@ jobs:
   generate-pull-request-description:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: pelikhan/action-genai-pull-request-descriptor@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
