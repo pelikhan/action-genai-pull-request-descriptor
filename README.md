@@ -1,4 +1,4 @@
-This GitHub Action generates a description of a pull request using Generative AI.
+This GitHub Action generates a description of a pull request using Generative AI. This is a test PR.
 
 - [example](https://github.com/pelikhan/action-genai-pull-request-descriptor/pull/4#issue-3147857342)
 
