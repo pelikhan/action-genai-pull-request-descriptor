@@ -39,6 +39,9 @@ const { instructions, gitmojis } = vars as {
 const excluded: string[] = vars.excluded?.split(/\r?\n|;/g) || [];
 const maxTokens = 7000;
 
+const info = await github.info()
+console.log(info.event)
+
 const base =
   vars.base || process.env.GITHUB_BASE_REF || (await git.defaultBranch());
 console.debug(`base: ` + base);
