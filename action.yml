@@ -1,5 +1,5 @@
 name: action-genai-pull-request-descriptor
-description: Pull Request Descriptor
+description: Generate a pull request description based on the changes in the codebase
 inputs:
   base:
     description: The base branch of the pull request
