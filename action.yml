@@ -20,8 +20,7 @@ inputs:
     required: false
   github_issue:
     description: GitHub pull request number to use when generating comments
-      (https://microsoft.github.io/genaiscript/reference/scripts/github/) (`${{
-      github.event.pull_request.number }}`)
+      (https://microsoft.github.io/genaiscript/reference/scripts/github/)
     required: false
   openai_api_key:
     description: OpenAI API key, `secrets.OPENAI_API_KEY`
