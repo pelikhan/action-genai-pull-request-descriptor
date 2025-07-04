@@ -30,7 +30,7 @@ Add the following to your step in your workflow file:
 ```yaml
 uses: pelikhan/action-genai-pull-request-descriptor@main
 with:
-
+  github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Example
@@ -62,7 +62,7 @@ jobs:
             genaiscript-
       - uses: pelikhan/action-genai-pull-request-descriptor@v0 # update to the major version you want to use
         with:
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Development
