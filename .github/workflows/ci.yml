@@ -3,10 +3,12 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 permissions:
   contents: read
   models: read
-  pull-requests: write
 jobs:
   test:
     runs-on: ubuntu-latest

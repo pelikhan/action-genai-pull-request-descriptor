@@ -1,12 +1,14 @@
+#!/bin/bash
+set -e  # exit immediately if a command exits with a non-zero status
 
 # make sure there's no other changes
 git pull
 
-# sync action.yml
+# re-generate action.yml
 npm run configure
+
 # Lint and build
 npm run lint
-
 # Step 0: ensure we're in sync
 if [ "$(git status --porcelain)" ]; then
   echo "❌ Pending changes detected. Commit or stash them first."
