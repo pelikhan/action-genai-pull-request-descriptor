@@ -1,59 +1,66 @@
-This GitHub Action generates a description of a pull request using Generative AI. This is a test PR.
-
-- [example](https://github.com/pelikhan/action-genai-pull-request-descriptor/pull/4#issue-3147857342)
-
-> [!NOTE]
-> This action uses [GitHub Models](https://github.com/models) for LLM inference.
+# Pull Request Descriptor
+        
+Generate a pull request description based on the changes in the codebase
 
 ## Inputs
 
-- `instructions`: Custom prompting instructions to generate the message.
-- `gitmojis`: Whether to use [Gitmojis](https://gitmoji.dev/) in the message. Defaults to `true`.
-- `excluded`: A comma-separated list of file paths to exclude from the message.
-- `github_token`: GitHub token with `models: read` permission at least (https://microsoft.github.io/genaiscript/reference/github-actions/#github-models-permissions). (required)
+- `base`: The base branch of the pull request
+- `gitmojis`: Whether to use gitmojis in the pull request description (default: `true`)
+- `instructions`: Instructions for the code reviewer
+- `excluded`: Excluded paths from diff
 - `debug`: Enable debug logging (https://microsoft.github.io/genaiscript/reference/scripts/logging/).
+- `github_issue`: GitHub pull request number to use when generating comments (https://microsoft.github.io/genaiscript/reference/scripts/github/) (`${{ github.event.pull_request.number }}`)
+- `openai_api_key`: OpenAI API key, `${{ secrets.OPENAI_API_KEY }}`
+- `openai_api_base`: OpenAI API base URL, `${{ env.OPENAI_API_BASE }}`
+- `azure_openai_api_endpoint`: Azure OpenAI endpoint. In the Azure Portal, open your Azure OpenAI resource, Keys and Endpoints, copy Endpoint., `${{ env.AZURE_OPENAI_API_ENDPOINT }}`
+- `azure_openai_api_key`: Azure OpenAI API key. **You do NOT need this if you are using Microsoft Entra ID., `${{ secrets.AZURE_OPENAI_API_KEY }}`
+- `azure_openai_subscription_id`: Azure OpenAI subscription ID to list available deployments (Microsoft Entra only)., `${{ env.AZURE_OPENAI_SUBSCRIPTION_ID }}`
+- `azure_openai_api_version`: Azure OpenAI API version., `${{ env.AZURE_OPENAI_API_VERSION }}`
+- `azure_openai_api_credentials`: Azure OpenAI API credentials type. Leave as 'default' unless you have a special Azure setup., `${{ env.AZURE_OPENAI_API_CREDENTIALS }}`
+- `github_token`: GitHub token with `models: read` permission at least (https://microsoft.github.io/genaiscript/reference/github-actions/#github-models-permissions)., `${{ secrets.GITHUB_TOKEN }}`
+
+## Outputs
+
+- `text`: The generated text output.
 
 ## Usage
 
 Add the following to your step in your workflow file:
 
 ```yaml
-uses: pelikhan/action-genai-pull-request-descriptor@v0
+uses: pelikhan/action-genai-pull-request-descriptor@main
 with:
   github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-The action requires the `models: read` permission to access GitHub Models inference and
-`pull-requests: write` permission to update the description of the pull request.
-
-```yaml
-permissions:
-  pull-requests: write
-  models: read
-```
-
 ## Example
 
-Save this code as `.github/workflows/genai-pull-request-descriptor.yml` in your repository:
+Save this file in your `.github/workflows/` directory as `pull-request-descriptor.yml`:
 
 ```yaml
-name: GenAI Pull Request Descriptor
+name: Action-Genai-Pull-Request-Descriptor
 on:
-  pull_request:
-    types: [opened, reopened, ready_for_review]
+    pull_request:
 permissions:
-  contents: read
-  pull-requests: write
-  models: read
+    contents: read
+    # issues: write
+    pull-requests: write
+    models: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 jobs:
-  generate-pull-request-description:
+  action_genai_pull_request_descriptor:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pelikhan/action-genai-pull-request-descriptor@v0
+      - uses: actions/cache@v4
+        with:
+          path: .genaiscript/cache/**
+          key: genaiscript-${{ github.run_id }}
+          restore-keys: |
+            genaiscript-
+      - uses: pelikhan/action-genai-pull-request-descriptor@v0 # update to the major version you want to use
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -65,7 +72,7 @@ We recommend updating the script metadata instead of editing the action files di
 
 - the action inputs are inferred from the script parameters
 - the action outputs are inferred from the script output schema
-- the action description is the script title
+- the action description is the script description
 - the readme description is the script description
 - the action branding is the script branding
 
@@ -82,9 +89,18 @@ npm run lint
 ```
 
 To typecheck the scripts, run:
-
 ```bash
 npm run typecheck
+```
+
+To build the Docker image locally, run:
+```bash
+npm run docker:build
+```
+
+To run the action locally in Docker (build it first), use:
+```bash
+npm run docker:start
 ```
 
 ## Upgrade
