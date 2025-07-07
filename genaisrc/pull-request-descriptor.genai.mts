@@ -41,7 +41,9 @@ const maxTokens = 7000;
 
 const base =
   vars.base || process.env.GITHUB_BASE_REF || (await git.defaultBranch());
+const current = await git.branch();
 console.debug(`base: ` + base);
+console.debug(`current: ` + current);
 dbg(`excluded: %o`, excluded);
 
 // make sure the base branch is fetched
